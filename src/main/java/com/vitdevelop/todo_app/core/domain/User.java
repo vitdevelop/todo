@@ -7,7 +7,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,9 +16,9 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "todo", schema = "public")
+@Table(name = "users", schema = "public")
 @EntityListeners(AuditingEntityListener.class)
-public class Todo implements Serializable {
+public class User implements Serializable {
 
     @Id
     @Column(name = "id", nullable = false)
@@ -27,11 +26,14 @@ public class Todo implements Serializable {
     private Long id;
 
     @NotBlank
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "username", nullable = false)
+    private String username;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
 
     @CreatedDate
     @Column(name = "created_on")
