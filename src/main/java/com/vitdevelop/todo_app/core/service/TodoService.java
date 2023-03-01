@@ -55,4 +55,13 @@ public class TodoService {
     public Todo save(Todo todo) {
         return todoRepository.save(todo);
     }
+
+    public List<Todo> findTodoByUserId(Long userId) {
+        return todoRepository.findTodoByUserId(userId);
+    }
+
+    public Todo findTodoByIdAndUserId(Long todoId, Long userId) {
+        return todoRepository.findTodoByIdAndUserId(todoId, userId)
+                .orElseThrow(() -> new ServiceException(ServiceErrorCode.TODO_NOT_FOUND));
+    }
 }

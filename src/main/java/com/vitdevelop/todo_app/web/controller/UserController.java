@@ -1,7 +1,9 @@
 package com.vitdevelop.todo_app.web.controller;
 
+import com.vitdevelop.todo_app.core.domain.Todo;
 import com.vitdevelop.todo_app.core.domain.User;
 import com.vitdevelop.todo_app.core.service.UserService;
+import com.vitdevelop.todo_app.web.data.TodoData;
 import com.vitdevelop.todo_app.web.data.UserData;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +25,11 @@ public class UserController {
         return ResponseEntity.ok(userService.findAllUsers());
     }
 
+    @GetMapping("/info")
+    public ResponseEntity<User> getUserInfoByUsername(@RequestParam String username) {
+        return ResponseEntity.ok(userService.findUserByUsername(username));
+    }
+
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable Long userId) {
         return ResponseEntity.ok(userService.findUserById(userId));
@@ -42,6 +49,37 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{userId}/todo")
+    public ResponseEntity<List<Todo>> getAllUserTodo(@PathVariable Long userId) {
+        return ResponseEntity.ok(userService.findUserTodo(userId));
+    }
+
+    @GetMapping("/{userId}/todo/{todoId}")
+    public ResponseEntity<Todo> getUserTodoById(@PathVariable Long userId,
+                                                @PathVariable Long todoId) {
+        return ResponseEntity.ok(userService.findUserTodoById(userId, todoId));
+    }
+
+    @PostMapping("/{userId}/todo")
+    public ResponseEntity<Todo> createUserTodo(@PathVariable Long userId,
+                                               @RequestBody TodoData todoData) {
+        return ResponseEntity.ok(userService.createUserTodo(userId, todoData.getTodo()));
+    }
+
+    @PutMapping("/{userId}/todo/{todoId}")
+    public ResponseEntity<Todo> updateUserTodo(@PathVariable Long userId,
+                                               @PathVariable Long todoId,
+                                               @RequestBody TodoData todoData) {
+        return ResponseEntity.ok(userService.updateUserTodo(userId, todoId, todoData.getTodo()));
+    }
+
+    @DeleteMapping("/{userId}/todo/{todoId}")
+    public ResponseEntity<Void> deleteUserTodo(@PathVariable Long userId,
+                                               @PathVariable Long todoId) {
+        userService.deleteUserTodoById(userId, todoId);
         return ResponseEntity.noContent().build();
     }
 }

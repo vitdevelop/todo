@@ -39,3 +39,44 @@ Content-Type: application/json
 # Delete user
 DELETE http://localhost:8080/api/users/4
 Accept: application/json
+
+###
+
+# Get user todo
+GET http://localhost:8080/api/users/1/todo
+Accept: application/json
+
+###
+
+# Get user todo by id
+GET http://localhost:8080/api/users/1/todo/1
+Accept: application/json
+
+###
+
+# Create todo
+POST http://localhost:8080/api/users/1/todo
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "make some text"
+}
+
+###
+
+# Update todo
+PUT http://localhost:8080/api/users/1/todo/1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "make updated text",
+  "description": "test description"
+}
+
+###
+
+# Delete todo
+DELETE http://localhost:8080/api/users/1/todo/1
+Accept: application/json

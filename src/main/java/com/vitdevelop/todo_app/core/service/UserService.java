@@ -1,5 +1,6 @@
 package com.vitdevelop.todo_app.core.service;
 
+import com.vitdevelop.todo_app.core.domain.Todo;
 import com.vitdevelop.todo_app.core.domain.User;
 import com.vitdevelop.todo_app.core.domain.enums.ServiceErrorCode;
 import com.vitdevelop.todo_app.core.exception.ServiceException;
@@ -16,9 +17,12 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final TodoService todoService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository,
+                       TodoService todoService) {
         this.userRepository = userRepository;
+        this.todoService = todoService;
     }
 
     @Transactional(readOnly = true)
@@ -33,7 +37,7 @@ public class UserService {
     }
 
     public User createUser(User user) {
-        if (userRepository.existsUserByUsername(user.getUsername())){
+        if (userRepository.existsUserByUsername(user.getUsername())) {
             throw new ServiceException(ServiceErrorCode.USER_ALREADY_EXISTS);
         }
 
@@ -60,5 +64,38 @@ public class UserService {
     public void deleteUser(Long userId) {
         findUserById(userId);
         userRepository.deleteById(userId);
+    }
+
+    public List<Todo> findUserTodo(Long userId) {
+        findUserById(userId);
+        return todoService.findTodoByUserId(userId);
+    }
+
+    public Todo findUserTodoById(Long userId, Long todoId) {
+        findUserById(userId);
+        return todoService.findTodoByIdAndUserId(todoId, userId);
+    }
+
+    public User findUserByUsername(String username) {
+        return userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new ServiceException(ServiceErrorCode.USER_NOT_FOUND));
+    }
+
+    public Todo createUserTodo(Long userId, Todo todo) {
+        findUserById(userId);
+
+        todo.setUserId(userId);
+        return todoService.createTodo(todo);
+    }
+
+    public Todo updateUserTodo(Long userId, Long todoId, Todo todo) {
+        findUserById(userId);
+
+        return todoService.updateTodo(todoId, todo);
+    }
+
+    public void deleteUserTodoById(Long userId, Long todoId) {
+        findUserById(userId);
+        todoService.deleteTodoById(todoId);
     }
 }
