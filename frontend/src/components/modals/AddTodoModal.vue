@@ -1,6 +1,6 @@
 <template>
   <MDBModal :model-value="enabled" tag="form" novalidate @submit.prevent="checkForm">
-    <MDBModalHeader>
+    <MDBModalHeader :close="false">
       <MDBModalTitle>New Todo</MDBModalTitle>
     </MDBModalHeader>
     <MDBModalBody>

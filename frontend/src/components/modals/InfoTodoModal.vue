@@ -1,6 +1,6 @@
 <template>
   <MDBModal :model-value="enabled">
-    <MDBModalHeader>
+    <MDBModalHeader :close="false">
       <MDBModalTitle>{{ todo.name }}</MDBModalTitle>
     </MDBModalHeader>
     <MDBModalBody>

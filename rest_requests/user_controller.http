@@ -4,6 +4,12 @@ Accept: application/json
 
 ###
 
+# Get user by username
+GET http://localhost:8080/api/users/info?username=another
+Accept: application/json
+
+###
+
 # Get user by id
 GET http://localhost:8080/api/users/1
 Accept: application/json
@@ -43,7 +49,7 @@ Accept: application/json
 ###
 
 # Get user todo
-GET http://localhost:8080/api/users/1/todo
+GET http://localhost:8080/api/users/2/todo
 Accept: application/json
 
 ###
