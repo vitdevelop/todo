@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -19,4 +20,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query(value = "DELETE FROM friends_requests WHERE user_id=? and friend_id=?", nativeQuery = true)
     int deleteUserFriend(Long userId, Long friendId);
+
+    @Query(value="Select u.id, u.username, u.first_name, u.last_name, u.created_on, u.updated_on " +
+            "FROM users u JOIN friends_requests fr ON u.id = fr.user_id WHERE fr.friend_id=?",nativeQuery = true)
+    List<User> selectProposalUsers(Long userId);
+
+
+    @Query(value="Select u.id, u.username, u.first_name, u.last_name, u.created_on, u.updated_on " +
+            "FROM users u JOIN friends_requests fr ON u.id = fr.friend_id WHERE fr.user_id=?",nativeQuery = true)
+    List<User> selectInvitedUsers(Long userId);
 }
