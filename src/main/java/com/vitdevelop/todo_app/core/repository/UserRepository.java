@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,10 +29,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "FROM users u JOIN user_friends uf ON u.id = uf.friend_id WHERE uf.user_id = ?",
                     nativeQuery = true)
     List<User> getFriends(Long userId);
-    
-    @Query(value = "INSERT INTO friends_requests (user_id, friend_id) VALUES (?, ?)", nativeQuery = true)
-    int insertUserFriend(Long userId, Long friendId);
 
+    @Modifying
+    @Query(value = "INSERT INTO friends_requests (user_id, friend_id) VALUES (?, ?)", nativeQuery = true)
+    void insertUserFriend(Long userId, Long friendId);
+
+    @Query(value = "SELECT fr.created_on FROM friends_requests fr WHERE fr.user_id = ? AND fr.friend_id=?", nativeQuery = true)
+    Optional<Date> findFriendsRequestCreatedOn(Long userId, Long friendId);
     @Modifying
     @Query(value = "DELETE FROM friends_requests WHERE user_id=? and friend_id=?", nativeQuery = true)
     int deleteUserFriend(Long userId, Long friendId);

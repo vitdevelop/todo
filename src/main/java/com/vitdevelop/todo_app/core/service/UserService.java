@@ -2,6 +2,7 @@ package com.vitdevelop.todo_app.core.service;
 
 import com.vitdevelop.todo_app.core.domain.Todo;
 import com.vitdevelop.todo_app.core.domain.User;
+import com.vitdevelop.todo_app.core.domain.data.FriendsRequests;
 import com.vitdevelop.todo_app.core.domain.enums.ServiceErrorCode;
 import com.vitdevelop.todo_app.core.exception.ServiceException;
 import com.vitdevelop.todo_app.core.repository.UserRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -83,7 +85,6 @@ public class UserService {
 
     public Todo createUserTodo(Long userId, Todo todo) {
         findUserById(userId);
-
         todo.setUserId(userId);
         return todoService.createTodo(todo);
     }
@@ -97,5 +98,20 @@ public class UserService {
     public void deleteUserTodoById(Long userId, Long todoId) {
         findUserById(userId);
         todoService.deleteTodoById(todoId);
+    }
+
+    public FriendsRequests inviteUserFriend(Long userId, String username) {
+        findUserById(userId);
+        var friend = findUserByUsername(username);
+        var requestCreatedOn = userRepository.findFriendsRequestCreatedOn(userId, friend.getId());
+
+        Date createdOn = null;
+        if (requestCreatedOn.isPresent()) {
+            createdOn = requestCreatedOn.get();
+        } else {
+            userRepository.insertUserFriend(userId, friend.getId());
+            createdOn = userRepository.findFriendsRequestCreatedOn(userId, friend.getId()).get();
+        }
+        return new FriendsRequests(username, createdOn);
     }
 }

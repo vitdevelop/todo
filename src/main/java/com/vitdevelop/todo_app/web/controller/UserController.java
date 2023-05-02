@@ -2,6 +2,7 @@ package com.vitdevelop.todo_app.web.controller;
 
 import com.vitdevelop.todo_app.core.domain.Todo;
 import com.vitdevelop.todo_app.core.domain.User;
+import com.vitdevelop.todo_app.core.domain.data.FriendsRequests;
 import com.vitdevelop.todo_app.core.service.UserService;
 import com.vitdevelop.todo_app.web.data.TodoData;
 import com.vitdevelop.todo_app.web.data.UserData;
@@ -81,5 +82,10 @@ public class UserController {
                                                @PathVariable Long todoId) {
         userService.deleteUserTodoById(userId, todoId);
         return ResponseEntity.noContent().build();
+    }
+    @PostMapping("/{userId}/friends")
+    public ResponseEntity<FriendsRequests> inviteFriend(@PathVariable Long userId,
+                                                        @RequestBody UserData userData){
+        return ResponseEntity.ok(userService.inviteUserFriend(userId,userData.getUsername()));
     }
 }
