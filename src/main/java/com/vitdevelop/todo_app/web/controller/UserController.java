@@ -82,4 +82,9 @@ public class UserController {
         userService.deleteUserTodoById(userId, todoId);
         return ResponseEntity.noContent().build();
     }
+    @GetMapping("/{userId}/friends")
+        public ResponseEntity<List<User>> findFriends(@PathVariable Long userId){
+        return ResponseEntity.ok(userService.findFriends(userId));
+    }
+
 }
