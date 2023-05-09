@@ -98,4 +98,9 @@ public class UserService {
         findUserById(userId);
         todoService.deleteTodoById(todoId);
     }
+
+    public List<User> findFriends(Long userId) {
+        findUserById(userId);
+        return userRepository.getFriends(userId);
+    }
 }
