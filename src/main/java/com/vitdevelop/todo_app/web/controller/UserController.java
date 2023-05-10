@@ -9,6 +9,7 @@ import com.vitdevelop.todo_app.web.data.UserData;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sound.midi.Patch;
 import java.util.List;
 
 @RestController
@@ -87,5 +88,11 @@ public class UserController {
     public ResponseEntity<FriendsRequests> inviteFriend(@PathVariable Long userId,
                                                         @RequestBody UserData userData){
         return ResponseEntity.ok(userService.inviteUserFriend(userId,userData.getUsername()));
+    }
+    @PatchMapping("{userId}/friends/{friendId}/decline")
+    public ResponseEntity<Void> deleteFriendsRequests(@PathVariable Long userId,
+                                                      @PathVariable Long friendId){
+        userService.deleteFriendsRequests(userId,friendId);
+        return ResponseEntity.noContent().build();
     }
 }
