@@ -86,5 +86,10 @@ public class UserController {
         public ResponseEntity<List<User>> findFriends(@PathVariable Long userId){
         return ResponseEntity.ok(userService.findFriends(userId));
     }
-
+    @DeleteMapping("/{userId}/friends/{friendId}")
+    public ResponseEntity<Void> deleteUserFriends(@PathVariable Long userId,
+                                                  @PathVariable Long friendId) {
+        userService.deleteFriends(userId,friendId);
+        return ResponseEntity.noContent().build();
+    }
 }

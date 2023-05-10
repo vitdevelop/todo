@@ -103,4 +103,10 @@ public class UserService {
         findUserById(userId);
         return userRepository.getFriends(userId);
     }
+
+    public void deleteFriends(Long userId, Long friendId) {
+        findUserById(userId);
+        findUserById(friendId);
+        userRepository.deleteFriends(userId,friendId);
+    }
 }
