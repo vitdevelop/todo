@@ -95,4 +95,10 @@ public class UserController {
         userService.deleteFriendsRequests(userId,friendId);
         return ResponseEntity.noContent().build();
     }
+    @PatchMapping("{userId}/friends/{friendId}/accept")
+    public ResponseEntity<Void> acceptFriendsRequests(@PathVariable Long userId,
+                                                      @PathVariable Long friendId){
+        userService.acceptFriendsRequest(userId,friendId);
+        return ResponseEntity.noContent().build();
+    }
 }
