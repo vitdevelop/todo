@@ -88,4 +88,10 @@ public class UserController {
                                                         @RequestBody UserData userData){
         return ResponseEntity.ok(userService.inviteUserFriend(userId,userData.getUsername()));
     }
+    @PatchMapping("/{userId}/friends/{friendId}/cancel")
+    public ResponseEntity<Void> cancelInvite(@PathVariable Long userId,
+                                             @PathVariable Long friendId){
+        userService.cancelInvite(userId,friendId);
+        return ResponseEntity.noContent().build();
+    }
 }
