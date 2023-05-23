@@ -2,7 +2,7 @@ package com.vitdevelop.todo_app.web.controller;
 
 import com.vitdevelop.todo_app.core.domain.Todo;
 import com.vitdevelop.todo_app.core.domain.User;
-import com.vitdevelop.todo_app.core.domain.data.FriendsRequests;
+import com.vitdevelop.todo_app.core.domain.data.FriendRequest;
 import com.vitdevelop.todo_app.core.service.UserService;
 import com.vitdevelop.todo_app.web.data.TodoData;
 import com.vitdevelop.todo_app.web.data.UserData;
@@ -84,8 +84,8 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
     @PostMapping("/{userId}/friends")
-    public ResponseEntity<FriendsRequests> inviteFriend(@PathVariable Long userId,
-                                                        @RequestBody UserData userData){
+    public ResponseEntity<FriendRequest> inviteFriend(@PathVariable Long userId,
+                                                      @RequestBody UserData userData){
         return ResponseEntity.ok(userService.inviteUserFriend(userId,userData.getUsername()));
     }
     @PatchMapping("/{userId}/friends/{friendId}/cancel")
@@ -93,5 +93,9 @@ public class UserController {
                                              @PathVariable Long friendId){
         userService.cancelInvite(userId,friendId);
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping("{userId}/friends/requests")
+    public ResponseEntity<List<FriendRequest>> listFriendRequests(@PathVariable Long userId){
+        return ResponseEntity.ok(userService.listFriendsRequests(userId));
     }
 }

@@ -4,5 +4,7 @@ import lombok.Data;
 
 import java.util.Date;
 
-public record FriendsRequests(String username, Date createdOn) {
+public interface FriendRequest {
+    String getUsername();
+    Date getCreatedOn();
 }
