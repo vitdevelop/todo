@@ -114,4 +114,19 @@ public class UserService {
         }
         return new FriendsRequests(username, createdOn);
     }
+
+    public void deleteFriendsRequests(Long userId, Long friendId) {
+        findUserById(userId);
+        findUserById(friendId);
+        userRepository.deleteUserFriend(userId, friendId);
+    }
+
+    public void acceptFriendsRequest(Long userId, Long friendId) {
+        var requestCreatedOn = userRepository.findFriendsRequestCreatedOn(userId,friendId);
+        if(requestCreatedOn.isEmpty()) {
+            throw new ServiceException(ServiceErrorCode.SUCCESFUL_ADDED);
+        }
+        deleteFriendsRequests(userId,friendId);
+        userRepository.insertFriends(userId,friendId);
+    }
 }

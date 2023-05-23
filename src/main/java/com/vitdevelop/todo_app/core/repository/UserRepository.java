@@ -4,6 +4,7 @@ import com.vitdevelop.todo_app.core.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -15,9 +16,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findUserByUsername(String username);
 
     @Modifying
-    @Query(value = "INSERT INTO user_friends (user_id, friend_id) VALUES (?, ?),(?, ?);",
+    @Query(value = "INSERT INTO user_friends (user_id, friend_id) VALUES (:userId, :friendId),(:friendId, :userId);",
             nativeQuery = true)
-    int insertFriends(Long userId, Long friendId);
+    void insertFriends(@Param("userId")Long userId,@Param("friendId") Long friendId);
 
     @Modifying
     @Query(value = "DELETE FROM user_friends WHERE (user_id = ? AND friend_id = ?) OR (user_id = ? AND friend_id = ?)",
