@@ -1,6 +1,7 @@
 package com.vitdevelop.todo_app.core.repository;
 
 import com.vitdevelop.todo_app.core.domain.User;
+import com.vitdevelop.todo_app.core.domain.data.FriendRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -48,4 +49,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value="Select u.id, u.username, u.first_name, u.last_name, u.created_on, u.updated_on " +
             "FROM users u JOIN friends_requests fr ON u.id = fr.friend_id WHERE fr.user_id=?",nativeQuery = true)
     List<User> selectInvitedUsers(Long userId);
+
+    @Query(value = "SELECT u.username as username, fr.created_on as createdOn FROM users u JOIN friends_requests fr ON fr.friend_id = u.id WHERE fr.user_id = ? ",
+    nativeQuery = true)
+    List<FriendRequest> selectFriendRequest(Long userId);
 }

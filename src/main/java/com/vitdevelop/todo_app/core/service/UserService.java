@@ -2,7 +2,8 @@ package com.vitdevelop.todo_app.core.service;
 
 import com.vitdevelop.todo_app.core.domain.Todo;
 import com.vitdevelop.todo_app.core.domain.User;
-import com.vitdevelop.todo_app.core.domain.data.FriendsRequests;
+import com.vitdevelop.todo_app.core.domain.data.FriendRequest;
+import com.vitdevelop.todo_app.core.domain.data.FriendRequestImpl;
 import com.vitdevelop.todo_app.core.domain.enums.ServiceErrorCode;
 import com.vitdevelop.todo_app.core.exception.ServiceException;
 import com.vitdevelop.todo_app.core.repository.UserRepository;
@@ -100,7 +101,7 @@ public class UserService {
         todoService.deleteTodoById(todoId);
     }
 
-    public FriendsRequests inviteUserFriend(Long userId, String username) {
+    public FriendRequest inviteUserFriend(Long userId, String username) {
         findUserById(userId);
         var friend = findUserByUsername(username);
         var requestCreatedOn = userRepository.findFriendsRequestCreatedOn(userId, friend.getId());
@@ -112,6 +113,17 @@ public class UserService {
             userRepository.insertUserFriend(userId, friend.getId());
             createdOn = userRepository.findFriendsRequestCreatedOn(userId, friend.getId()).get();
         }
-        return new FriendsRequests(username, createdOn);
+        return new FriendRequestImpl(username, createdOn);
+    }
+
+    public void cancelInvite(Long userId, Long friendId) {
+        findUserById(userId);
+        findUserById(friendId);
+        userRepository.deleteUserFriend(userId,friendId);
+    }
+
+    public List<FriendRequest> listFriendsRequests(Long userId) {
+        findUserById(userId);
+        return userRepository.selectFriendRequest(userId);
     }
 }
