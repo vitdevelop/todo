@@ -3,6 +3,7 @@ package com.vitdevelop.todo_app.web.controller;
 import com.vitdevelop.todo_app.core.domain.Todo;
 import com.vitdevelop.todo_app.core.domain.User;
 import com.vitdevelop.todo_app.core.domain.data.FriendRequest;
+import com.vitdevelop.todo_app.core.domain.data.SharedTodo;
 import com.vitdevelop.todo_app.core.service.UserService;
 import com.vitdevelop.todo_app.web.data.TodoData;
 import com.vitdevelop.todo_app.web.data.UserData;
@@ -97,5 +98,9 @@ public class UserController {
     @GetMapping("{userId}/friends/requests")
     public ResponseEntity<List<FriendRequest>> listFriendRequests(@PathVariable Long userId){
         return ResponseEntity.ok(userService.listFriendsRequests(userId));
+    }
+    @GetMapping("/{userId}/todo/shared")
+    public  ResponseEntity<List<SharedTodo>> getSharedTodos(@PathVariable Long userId){
+        return ResponseEntity.ok(userService.getSharedTodos(userId));
     }
 }
