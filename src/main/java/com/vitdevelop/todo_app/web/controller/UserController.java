@@ -9,7 +9,6 @@ import com.vitdevelop.todo_app.web.data.UserData;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.sound.midi.Patch;
 import java.util.List;
 
 @RestController
