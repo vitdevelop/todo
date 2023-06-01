@@ -4,6 +4,7 @@ import com.vitdevelop.todo_app.core.domain.Todo;
 import com.vitdevelop.todo_app.core.domain.User;
 import com.vitdevelop.todo_app.core.domain.data.FriendRequest;
 import com.vitdevelop.todo_app.core.domain.data.FriendRequestImpl;
+import com.vitdevelop.todo_app.core.domain.data.SharedTodo;
 import com.vitdevelop.todo_app.core.domain.enums.ServiceErrorCode;
 import com.vitdevelop.todo_app.core.exception.ServiceException;
 import com.vitdevelop.todo_app.core.repository.UserRepository;
@@ -125,5 +126,10 @@ public class UserService {
     public List<FriendRequest> listFriendsRequests(Long userId) {
         findUserById(userId);
         return userRepository.selectFriendRequest(userId);
+    }
+
+    public List<SharedTodo> getSharedTodos(Long userId) {
+        findUserById(userId);
+        return todoService.getSharedTodos(userId);
     }
 }

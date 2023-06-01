@@ -1,6 +1,7 @@
 package com.vitdevelop.todo_app.core.service;
 
 import com.vitdevelop.todo_app.core.domain.Todo;
+import com.vitdevelop.todo_app.core.domain.data.SharedTodo;
 import com.vitdevelop.todo_app.core.domain.enums.ServiceErrorCode;
 import com.vitdevelop.todo_app.core.exception.ServiceException;
 import com.vitdevelop.todo_app.core.repository.TodoRepository;
@@ -17,7 +18,6 @@ import java.util.List;
 public class TodoService {
 
     private final TodoRepository todoRepository;
-
     public TodoService(TodoRepository todoRepository) {
         this.todoRepository = todoRepository;
     }
@@ -63,5 +63,9 @@ public class TodoService {
     public Todo findTodoByIdAndUserId(Long todoId, Long userId) {
         return todoRepository.findTodoByIdAndUserId(todoId, userId)
                 .orElseThrow(() -> new ServiceException(ServiceErrorCode.TODO_NOT_FOUND));
+    }
+
+    public List<SharedTodo> getSharedTodos(Long userId) {
+        return todoRepository.getTodos(userId);
     }
 }
